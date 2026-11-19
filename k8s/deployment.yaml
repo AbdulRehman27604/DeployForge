@@ -1,0 +1,27 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployforge
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: deployforge
+  template:
+    metadata:
+      labels:
+        app: deployforge
+    spec:
+      containers:
+        - name: deployforge-api
+          image: deployforge:1.0
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8000
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 3
+            periodSeconds: 5
